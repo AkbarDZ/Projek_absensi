@@ -5,7 +5,7 @@ if (!isset($_SESSION['user_id'])) {
     exit;
 }
 
-require 'db.php';
+require 'backend/db.php';
 date_default_timezone_set('Asia/Jakarta');
 
 $nama = $_SESSION['nama'];
@@ -67,13 +67,7 @@ if ($role === 'admin') {
 
 <body>
 
-<nav>
-    <a href="home.php">Home</a>
-    <a href="statistik.php">Statistik</a>
-    <span style="float: right;">
-    Logged in as: <strong><?php echo htmlspecialchars($nama); ?></strong> (<?php echo $role; ?>) |
-    <a href="logout.php">Logout</a>
-</nav>
+<?php include 'component/navbar.php'; ?>
 
 <h2>Attendance Statistics</h2>
 

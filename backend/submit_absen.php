@@ -4,13 +4,9 @@ require 'db.php';
 date_default_timezone_set('Asia/Jakarta');
 
 if (!isset($_SESSION['user_id'])) {
-    header("Location: login.php");
+    header("Location: ../login.php");
     exit;
 }
-
-// Office location (set yours here)
-$officeLat = -6.398985; // Example: Jakarta
-$officeLng = 106.890772;
 
 // Get POST data
 if (!isset($_POST['latitude'], $_POST['longitude'], $_POST['action'])) {
@@ -22,7 +18,20 @@ $lat = (float)$_POST['latitude'];
 $lng = (float)$_POST['longitude'];
 $action = $_POST['action']; // 'in' or 'out'
 
-// Calculate distance
+// 🔄 Fetch office location and limit from DB
+$stmt = $pdo->query("SELECT latitude, longitude, distance_limit_km FROM config WHERE id = 1");
+$config = $stmt->fetch();
+
+if (!$config) {
+    echo "⚠️ Office location config not found.";
+    exit;
+}
+
+$officeLat = $config['latitude'];
+$officeLng = $config['longitude'];
+$distanceLimit = $config['distance_limit_km'];
+
+// 🔍 Distance calculation
 function haversine($lat1, $lon1, $lat2, $lon2) {
     $earthRadius = 6371; // in kilometers
     $dLat = deg2rad($lat2 - $lat1);
@@ -37,13 +46,13 @@ function haversine($lat1, $lon1, $lat2, $lon2) {
 }
 
 $distance = haversine($officeLat, $officeLng, $lat, $lng);
-if ($distance > 1) {
-    echo "❌ You're too far from the office to check in/out (Distance: " . round($distance, 2) . " km).";
-    echo "<br><a href='home.php'>Back</a>";
+if ($distance > $distanceLimit) {
+    echo "❌ You're too far from the office to check in/out (Distance: " . round($distance, 2) . " km, limit: {$distanceLimit} km).";
+    echo "<br><a href='../home.php'>Back</a>";
     exit;
 }
 
-// Time & session info
+// Attendance logic
 $user_id = $_SESSION['user_id'];
 $tanggal = date('Y-m-d');
 $now = date('Y-m-d H:i:s');
@@ -79,4 +88,5 @@ if (!$absen && $action === 'in') {
     echo "⚠️ Attendance already recorded or invalid action.";
 }
 
-echo "<br><a href='home.php'>Back</a>";
+echo "<br><a href='../home.php'>Back</a>";
+

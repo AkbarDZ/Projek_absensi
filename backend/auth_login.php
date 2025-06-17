@@ -6,7 +6,7 @@ $identifier = $_POST['identifier'] ?? '';
 $password = $_POST['password'] ?? '';
 
 if (empty($identifier) || empty($password)) {
-    header("Location: login.php?error=Please fill in all fields");
+    header("Location: ../login.php?error=Please fill in all fields");
     exit;
 }
 
@@ -20,10 +20,10 @@ if ($user && $password === $user['password']) {
     $_SESSION['user_id'] = $user['id'];
     $_SESSION['nama'] = $user['nama'];
     $_SESSION['role'] = $user['role'];
-    header("Location: home.php");
+    header("Location: ../home.php");
     exit;
 } else {
     // Invalid login
-    header("Location: login.php?error=Invalid credentials");
+    header("Location: ../login.php?error=Invalid credentials");
     exit;
 }

@@ -5,7 +5,7 @@ if (!isset($_SESSION['user_id'])) {
     exit;
 }
 
-require 'db.php';
+require 'backend/db.php';
 date_default_timezone_set('Asia/Jakarta');
 
 $nama = $_SESSION['nama'];
@@ -40,14 +40,7 @@ $absen = $stmt->fetch();
 </head>
 <body>
 
-<nav>
-    <a href="home.php">Home</a>
-    <a href="statistik.php">Statistik</a>
-    <span style="float: right;">
-        Logged in as: <strong><?php echo htmlspecialchars($nama); ?></strong> (<?php echo $role; ?>) |
-        <a href="logout.php">Logout</a>
-    </span>
-</nav>
+<?php include 'component/navbar.php'; ?>
 
 <h2>Welcome, <?php echo htmlspecialchars($nama); ?>!</h2>
 
@@ -64,6 +57,14 @@ $absen = $stmt->fetch();
     ⏹ Checked out at: <strong><?php echo $absen['jam_keluar']; ?></strong></p>
 <?php endif; ?>
 
+<script>
+    navigator.geolocation.getCurrentPosition(pos => {
+    console.log("Your current location is:");
+    console.log("Latitude: ", pos.coords.latitude);
+    console.log("Longitude:", pos.coords.longitude);
+});
+</script>
+
 <!-- JS: Geolocation + Form submission -->
 <script>
 function submitAttendance(actionType) {
@@ -78,7 +79,7 @@ function submitAttendance(actionType) {
 
         const form = document.createElement("form");
         form.method = "POST";
-        form.action = "submit_absen.php";
+        form.action = "backend/submit_absen.php";
 
         const latInput = document.createElement("input");
         latInput.type = "hidden";
