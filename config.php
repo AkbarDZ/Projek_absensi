@@ -21,8 +21,35 @@ $limit = $config ? $config['distance_limit_km'] : 1.0;
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
     <style>
         #map { height: 400px; width: 100%; margin-top: 20px; }
-        nav { background-color: #eee; padding: 10px; }
-        nav a { margin-right: 15px; text-decoration: none; }
+        nav {
+            background-color: #2f3542;
+            padding: 15px 30px;
+            border-radius: 8px;
+            color: #fff;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .nav-left a {
+            color: #ffffff;
+            margin-right: 20px;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .nav-left a:hover {
+            text-decoration: underline;
+        }
+
+        .nav-right {
+            font-size: 0.9rem;
+            color: #fff;
+            margin-top: 10px;
+        }
+
     </style>
 </head>
 <body>

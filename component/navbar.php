@@ -8,13 +8,19 @@ $role = $_SESSION['role'] ?? 'guest';
 ?>
 
 <nav>
-    <a href="home.php">Home</a>
-    <a href="statistik.php">Statistik</a>
-    <?php if ($role === 'admin'): ?>
-        <a href="config.php">Config</a>
-    <?php endif; ?>
-    <span style="float: right;">
-        Logged in as: <strong><?= htmlspecialchars($nama) ?></strong> (<?= $role ?>) |
-        <a href="logout.php">Logout</a>
-    </span>
+    <div class="nav-left">
+        <a href="home.php">Home</a>
+        <a href="statistik.php">Statistik</a>
+        
+        <?php if ($role === 'admin'): ?>
+            <a href="config.php">Config</a>
+        <?php endif; ?>
+    </div>
+
+    <div class="nav-right">
+        <span style="float: right;">
+            Logged in as: <strong><?php echo htmlspecialchars($nama); ?></strong> (<?php echo $role; ?>) |
+            <a href="logout.php" class="logout-btn">Logout</a>
+        </span>
+    </div>
 </nav>
