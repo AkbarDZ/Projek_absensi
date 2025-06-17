@@ -109,11 +109,6 @@
             <button type="submit">LOGIN</button>
         </form>
 
-        <div class="social-login">
-            <p>Or login with</p>
-            <button>Facebook</button>
-            <button>Google</button>
-        </div>
 
         <div class="signup-link">
             Not a member? <a href="#">Sign up now</a>
