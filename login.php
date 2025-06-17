@@ -94,7 +94,7 @@
 
     <div class="login-box">
         <h2>LOGIN</h2>
-
+<h1>Faisal GUANTENG REKK</h1>
         <?php if (isset($_GET['error'])): ?>
             <div class="error-message"><?php echo htmlspecialchars($_GET['error']); ?></div>
         <?php endif; ?>
