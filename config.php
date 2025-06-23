@@ -21,6 +21,19 @@ $limit = $config ? $config['distance_limit_km'] : 1.0;
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
     <style>
         #map { height: 400px; width: 100%; margin-top: 20px; }
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f4f6f8;
+            padding: 20px;
+        }
+
+        /* Navbar Styling */
         nav {
             background-color: #2f3542;
             padding: 15px 30px;
@@ -48,6 +61,68 @@ $limit = $config ? $config['distance_limit_km'] : 1.0;
             font-size: 0.9rem;
             color: #fff;
             margin-top: 10px;
+        }
+
+        h2 {
+            margin-bottom: 20px;
+            color: #2f3542;
+        }
+
+        /* Tombol */
+        button {
+            background-color: #1e90ff;
+            border: none;
+            color: white;
+            padding: 12px 25px;
+            text-align: center;
+            font-size: 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            margin-top: 20px;
+        }
+
+        button:hover {
+            background-color: rgb(65, 37, 223);
+        }
+
+        /* Pesan status absensi */
+        p {
+            background-color: #ffffff;
+            padding: 20px;
+            border-left: 5px solid #2ed573;
+            border-radius: 6px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            max-width: 500px;
+            margin-top: 20px;
+            line-height: 1.6;
+        }
+        
+        .logout-btn {
+            background-color: #ff6b6b;
+            color: white;
+            padding: 6px 12px;
+            border-radius: 4px;
+            text-decoration: none;
+            font-size: 0.85rem;
+            margin-left: 10px;
+        }
+
+        .logout-btn:hover {
+            background-color: #e84141;
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 600px) {
+            nav {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .nav-right {
+                margin-top: 10px;
+                text-align: left;
+            }
         }
 
     </style>
