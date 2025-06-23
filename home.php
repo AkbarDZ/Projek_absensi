@@ -36,7 +36,7 @@ $absen = $stmt->fetch();
 
         body {
             background-color: #f4f6f8;
-            padding: 1rem;
+            padding: 20px;
         }
 
         .container {
@@ -44,33 +44,37 @@ $absen = $stmt->fetch();
             padding: 1rem;
         }
 
-        nav {
-            background-color: #2f3542;
-            padding: 1rem 2rem;
-            border-radius: 8px;
-            color: #fff;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 2rem;
-            flex-wrap: wrap;
-        }
+        /* Navbar Styling */
+nav {
+    background-color: #2f3542;
+    padding: 15px 30px;
+    border-radius: 8px;
+    color: #fff;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    flex-wrap: wrap;
+}
 
-        .nav-left a {
-            color: #ffffff;
-            margin-right: 1rem;
-            text-decoration: none;
-            font-weight: 500;
-        }
+.nav-left a {
+    color: #ffffff;
+    margin-right: 20px;
+    text-decoration: none;
+    font-weight: 500;
+}
 
-        .nav-left a:hover {
-            text-decoration: underline;
-        }
+.nav-left a:hover {
+    text-decoration: underline;
+}
 
-        .nav-right {
-            font-size: 0.9rem;
-            margin-top: 0.5rem;
-        }
+.nav-right {
+    display: flex;
+    justify-content: center; 
+    align-items: center; 
+    padding: 5px;
+    color: white;
+}
 
         h2 {
             margin-bottom: 1rem;
@@ -108,27 +112,25 @@ $absen = $stmt->fetch();
         .logout-btn {
             background-color: #ff6b6b;
             color: white;
-            padding: 0.4rem 0.8rem;
+            padding: 6px 12px;
             border-radius: 4px;
             text-decoration: none;
             font-size: 0.85rem;
-            margin-left: 0.5rem;
-        }
+            margin-left: 10px;
 
         .logout-btn:hover {
             background-color: #e84141;
         }
 
-        @media (max-width: 600px) {
+        @media (max-width: 768px) {
             nav {
                 flex-direction: column;
                 align-items: flex-start;
             }
 
-            .nav-left,
             .nav-right {
-                width: 100%;
-                margin-top: 0.5rem;
+                margin-top: 10px;
+                text-allign: left;
             }
 
             h2 {
@@ -137,12 +139,6 @@ $absen = $stmt->fetch();
 
             button {
                 width: 100%;
-                font-size: 1rem;
-            }
-
-            .logout-btn {
-                margin-top: 0.5rem;
-                display: inline-block;
             }
         }
     </style>
