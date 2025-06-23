@@ -2,7 +2,7 @@
 $host = 'localhost';
 $dbname = 'db_absensi_app';
 $user = 'root';
-$pass = 'root'; // or your password
+$pass = ''; // or your password
 
 try {
     $pdo = new PDO("mysql:host=$host;dbname=$dbname", $user, $pass);
