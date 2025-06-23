@@ -74,11 +74,14 @@ if ($role === 'admin') {
             text-decoration: underline;
         }
 
-        .nav-right {
-            font-size: 0.9rem;
-            color: #fff;
-            margin-top: 10px;
-        }
+.nav-right {
+    display: flex;
+    justify-content: center; 
+    align-items: center; 
+    padding: 5px;
+    color: white;
+}
+
 
         .logout-btn {
             background-color: #ff6b6b;
