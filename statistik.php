@@ -119,6 +119,7 @@ if ($role === 'admin') {
         }
 
         #dateFilter input {
+            width: 100%;
             padding: 5px 10px;
             border-radius: 5px;
             border: 1px solid #ccc;
@@ -220,9 +221,15 @@ if ($role === 'admin') {
                     <td><?php echo htmlspecialchars($row['nama']); ?></td>
                 <?php endif; ?>
                 <td><?php echo htmlspecialchars($row['tanggal']); ?></td>
-                <td><?php echo $row['jam_masuk'] ?? '-'; ?></td>
-                <td><?php echo $row['jam_keluar'] ?? '-'; ?></td>
-                <td><?php echo ucfirst($row['status']); ?></td>
+                <?php if ($role === 'admin'): ?>
+                    <td class="editable-time" data-id="<?= $row['id'] ?>" data-field="jam_masuk"><?= $row['jam_masuk'] ?></td>
+                    <td class="editable-time" data-id="<?= $row['id'] ?>" data-field="jam_keluar"><?= $row['jam_keluar'] ?></td>
+                    <td class="editable-status" data-id="<?= $row['id'] ?>" data-current="<?= $row['status'] ?>"><?= htmlspecialchars($row['status']) ?></td>
+                <?php else: ?>
+                    <td><?= $row['jam_masuk'] ?></td>
+                    <td><?= $row['jam_keluar'] ?></td>
+                    <td><?= $row['status'] ?></td>
+                <?php endif; ?>
             </tr>
         <?php endforeach; ?>
     </tbody>
@@ -230,36 +237,126 @@ if ($role === 'admin') {
 
 <!-- DataTables + Date Filter -->
 <script>
-$(document).ready(function() {
-    const dateColumn = <?php echo ($role === 'admin') ? 1 : 0; ?>;
 
-    const table = $('#attendanceTable').DataTable({
-        order: [[dateColumn, 'desc']],
-        pageLength: 10
+    $(document).ready(function() {
+        const dateColumn = <?php echo ($role === 'admin') ? 1 : 0; ?>;
+
+        const table = $('#attendanceTable').DataTable({
+            order: [[dateColumn, 'desc']],
+            pageLength: 10
+        });
+
+        $("#min, #max").datepicker({ dateFormat: "yy-mm-dd" });
+
+        $.fn.dataTable.ext.search.push(function(settings, data, dataIndex) {
+            const min = $('#min').datepicker("getDate");
+            const max = $('#max').datepicker("getDate");
+            const date = new Date(data[dateColumn]);
+
+            if (
+                (!min && !max) ||
+                (!min && date <= max) ||
+                (min <= date && !max) ||
+                (min <= date && date <= max)
+            ) {
+                return true;
+            }
+            return false;
+        });
+
+        $('#min, #max').change(function() {
+            table.draw();
+        });
+    });
+    
+</script>
+<script>
+
+    $(document).on('dblclick', '.editable-status', function () {
+        var cell = $(this);
+        var currentStatus = cell.data('current');
+        var id = cell.data('id');
+
+        var select = `
+            <select class="status-selector">
+                <option value="hadir" ${currentStatus === 'hadir' ? 'selected' : ''}>Hadir</option>
+                <option value="terlambat" ${currentStatus === 'terlambat' ? 'selected' : ''}>Terlambat</option>
+                <option value="izin" ${currentStatus === 'izin' ? 'selected' : ''}>Izin</option>
+                <option value="sakit" ${currentStatus === 'sakit' ? 'selected' : ''}>Sakit</option>
+            </select>
+        `;
+
+        cell.html(select);
+        cell.find('select').focus();
     });
 
-    $("#min, #max").datepicker({ dateFormat: "yy-mm-dd" });
+</script>
+<script>
 
-    $.fn.dataTable.ext.search.push(function(settings, data, dataIndex) {
-        const min = $('#min').datepicker("getDate");
-        const max = $('#max').datepicker("getDate");
-        const date = new Date(data[dateColumn]);
+    $(document).on('dblclick', '.editable-time', function () {
+        var cell = $(this);
+        var currentValue = cell.text().trim();
+        var id = cell.data('id');
+        var field = cell.data('field');
 
-        if (
-            (!min && !max) ||
-            (!min && date <= max) ||
-            (min <= date && !max) ||
-            (min <= date && date <= max)
-        ) {
-            return true;
-        }
-        return false;
+        // Show an input field
+        var input = $('<input type="time" step="1">').val(currentValue);
+        cell.html(input);
+        input.focus();
+
+        input.on('blur', function () {
+            var newTime = input.val();
+            if (!newTime) {
+                cell.text(currentValue);
+                return;
+            }
+
+            // If only HH:MM provided, add :00 seconds
+            if (/^\d{2}:\d{2}$/.test(newTime)) {
+                newTime += ':00';
+            }
+
+            $.ajax({
+                url: 'backend/update_attendance_inline.php',
+                method: 'POST',
+                data: {
+                    id: id,
+                    field: field,
+                    value: newTime
+                },
+                success: function () {
+                    cell.text(newTime);
+                },
+                error: function () {
+                    alert("❌ Failed to update time.");
+                    cell.text(currentValue);
+                }
+            });
+        });
     });
 
-    $('#min, #max').change(function() {
-        table.draw();
+</script>
+<script>
+    
+    $(document).on('change', '.status-selector', function () {
+        var select = $(this);
+        var newStatus = select.val();
+        var cell = select.closest('.editable-status');
+        var id = cell.data('id');
+
+        // Send AJAX to update
+        $.ajax({
+            url: 'backend/update_attendance_inline.php',
+            method: 'POST',
+            data: { id: id, field: 'status', value: newStatus },
+            success: function (res) {
+                cell.text(newStatus).data('current', newStatus);
+            },
+            error: function () {
+                alert('❌ Failed to update status');
+            }
+        });
     });
-});
 </script>
 
 </body>

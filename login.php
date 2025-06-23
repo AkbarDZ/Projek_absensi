@@ -5,6 +5,9 @@
     <title>Login - Attendance App</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
     <style>
+        *, *::before, *::after {
+            box-sizing: border-box;
+        }
         body {
             margin: 0;
             font-family: 'Poppins', sans-serif;
@@ -101,17 +104,12 @@
         <form method="POST" action="backend/auth_login.php">
             <input type="text" name="identifier" placeholder="Email" required>
             <input type="password" name="password" placeholder="Password" required>
-            <div class="remember">
-                <input type="checkbox" id="remember"> <label for="remember" style="margin-left: 8px;">Remember me</label>
-            </div>
+
 
             <button type="submit">LOGIN</button>
         </form>
 
 
-        <div class="signup-link">
-            Not a member? <a href="#">Sign up now</a>
-        </div>
     </div>
 
 </body>
